@@ -16,7 +16,7 @@ We now need to fetch any new code for the lab from the Github repository and cre
 cd ~/mlpractical
 ```
 
-If you have not yet commited the changes you made to the current branch in the previous lab you should do so now. You can check if you have changes not yet commited by running `git status`. If there are files with changes to be commited (they will appear in red) you should first add them to the staging area using
+If you have not yet commited the changes you made to the current branch in the previous lab you should do so now. You can check if you have changes not yet commited by running `git status`. If there are files with changes to be commited you should first add them to the staging area using
 
 ```
 git add path/to/file1 path/to/file2
