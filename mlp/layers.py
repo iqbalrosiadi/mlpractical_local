@@ -68,13 +68,6 @@ class LayerWithParameters(Layer):
         """
         raise NotImplementedError()
 
-    def params_cost(self):
-        """Returns the parameter dependent cost term for this layer.
-
-        If no parameter-dependent cost terms are set this returns zero.
-        """
-        raise NotImplementedError()
-
     @property
     def params(self):
         """Returns a list of parameters of layer.
@@ -104,8 +97,7 @@ class AffineLayer(LayerWithParameters):
 
     def __init__(self, input_dim, output_dim,
                  weights_initialiser=init.UniformInit(-0.1, 0.1),
-                 biases_initialiser=init.ConstantInit(0.),
-                 weights_cost=None, biases_cost=None):
+                 biases_initialiser=init.ConstantInit(0.)):
         """Initialises a parameterised affine layer.
 
         Args:
@@ -113,15 +105,11 @@ class AffineLayer(LayerWithParameters):
             output_dim (int): Dimension of the layer outputs.
             weights_initialiser: Initialiser for the weight parameters.
             biases_initialiser: Initialiser for the bias parameters.
-            weights_cost: Weights-dependent cost term.
-            biases_cost: Biases-dependent cost term.
         """
         self.input_dim = input_dim
         self.output_dim = output_dim
         self.weights = weights_initialiser((self.output_dim, self.input_dim))
         self.biases = biases_initialiser(self.output_dim)
-        self.weights_cost = weights_cost
-        self.biases_cost = biases_cost
 
     def fprop(self, inputs):
         """Forward propagates activations through the layer transformation.
@@ -135,7 +123,7 @@ class AffineLayer(LayerWithParameters):
         Returns:
             outputs: Array of layer outputs of shape (batch_size, output_dim).
         """
-        return self.weights.dot(inputs.T).T + self.biases
+        return inputs.dot(self.weights.T) + self.biases
 
     def bprop(self, inputs, outputs, grads_wrt_outputs):
         """Back propagates gradients through a layer.
@@ -171,26 +159,7 @@ class AffineLayer(LayerWithParameters):
 
         grads_wrt_weights = np.dot(grads_wrt_outputs.T, inputs)
         grads_wrt_biases = np.sum(grads_wrt_outputs, axis=0)
-
-        if self.weights_cost is not None:
-            grads_wrt_weights += self.weights_cost.grad(self.weights)
-
-        if self.biases_cost is not None:
-            grads_wrt_biases += self.biases_cost.grads(self.biases)
-
         return [grads_wrt_weights, grads_wrt_biases]
-
-    def params_cost(self):
-        """Returns the parameter dependent cost term for this layer.
-
-        If no parameter-dependent cost terms are set this returns zero.
-        """
-        params_cost = 0
-        if self.weights_cost is not None:
-            params_cost += self.weights_cost(self.weights)
-        if self.biases_cost is not None:
-            params_cost += self.biases_cost(self.biases)
-        return params_cost
 
     @property
     def params(self):
@@ -245,84 +214,6 @@ class SigmoidLayer(Layer):
 
     def __repr__(self):
         return 'SigmoidLayer'
-
-
-class ReluLayer(Layer):
-    """Layer implementing an element-wise rectified linear transformation."""
-
-    def fprop(self, inputs):
-        """Forward propagates activations through the layer transformation.
-
-        For inputs `x` and outputs `y` this corresponds to `y = max(0, x)`.
-
-        Args:
-            inputs: Array of layer inputs of shape (batch_size, input_dim).
-
-        Returns:
-            outputs: Array of layer outputs of shape (batch_size, output_dim).
-        """
-        return np.maximum(inputs, 0.)
-
-    def bprop(self, inputs, outputs, grads_wrt_outputs):
-        """Back propagates gradients through a layer.
-
-        Given gradients with respect to the outputs of the layer calculates the
-        gradients with respect to the layer inputs.
-
-        Args:
-            inputs: Array of layer inputs of shape (batch_size, input_dim).
-            outputs: Array of layer outputs calculated in forward pass of
-                shape (batch_size, output_dim).
-            grads_wrt_outputs: Array of gradients with respect to the layer
-                outputs of shape (batch_size, output_dim).
-
-        Returns:
-            Array of gradients with respect to the layer inputs of shape
-            (batch_size, input_dim).
-        """
-        return (outputs > 0) * grads_wrt_outputs
-
-    def __repr__(self):
-        return 'ReluLayer'
-
-
-class TanhLayer(Layer):
-    """Layer implementing an element-wise hyperbolic tangent transformation."""
-
-    def fprop(self, inputs):
-        """Forward propagates activations through the layer transformation.
-
-        For inputs `x` and outputs `y` this corresponds to `y = tanh(x)`.
-
-        Args:
-            inputs: Array of layer inputs of shape (batch_size, input_dim).
-
-        Returns:
-            outputs: Array of layer outputs of shape (batch_size, output_dim).
-        """
-        return np.tanh(inputs)
-
-    def bprop(self, inputs, outputs, grads_wrt_outputs):
-        """Back propagates gradients through a layer.
-
-        Given gradients with respect to the outputs of the layer calculates the
-        gradients with respect to the layer inputs.
-
-        Args:
-            inputs: Array of layer inputs of shape (batch_size, input_dim).
-            outputs: Array of layer outputs calculated in forward pass of
-                shape (batch_size, output_dim).
-            grads_wrt_outputs: Array of gradients with respect to the layer
-                outputs of shape (batch_size, output_dim).
-
-        Returns:
-            Array of gradients with respect to the layer inputs of shape
-            (batch_size, input_dim).
-        """
-        return (1. - outputs**2) * grads_wrt_outputs
-
-    def __repr__(self):
-        return 'TanhLayer'
 
 
 class SoftmaxLayer(Layer):
