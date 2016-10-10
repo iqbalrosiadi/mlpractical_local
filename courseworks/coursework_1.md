@@ -217,7 +217,7 @@ You should create a scheduler class which implements the above momentum coeffici
 
 Using your implementation you should:
 
-  * Try out several different momentum rate schedules by using different values for $\gamma$ and $\tau$ and investigate whether using a variable momentum coefficient gives improved performance over a constant momentum coefficient baseline.
+  * Try out several different momentum rate schedules by using different values for $\alpha_{\infty}$, $\gamma$ and $\tau$ and investigate whether using a variable momentum coefficient gives improved performance over a constant momentum coefficient baseline.
 
 ## Part 3: Adaptive learning rules (40 marks)
 
