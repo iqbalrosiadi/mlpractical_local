@@ -5,7 +5,7 @@
 
 ## Introduction
 
-This coursework is concerned with training multi-layer networks to address the MNIST digit classification problem. It builds on the material covered in the first three lab notebooks and the first four lectures.  It is highly recommended that you complete the fist three lab notebooks before starting the coursework.  The aim of the coursework is to investigate the effect of learning rate schedules and adaptive learning rates on the progression of training and the final performance achieved by the trained models.
+This coursework is concerned with training multi-layer networks to address the MNIST digit classification problem. It builds on the material covered in the first three lab notebooks and the first four lectures.  It is highly recommended that you complete the first three lab notebooks before starting the coursework.  The aim of the coursework is to investigate the effect of learning rate schedules and adaptive learning rates on the progression of training and the final performance achieved by the trained models.
 
 ## Mechanics
 
@@ -211,7 +211,7 @@ Analogous to scheduling of the learning rate, it is also possible to vary the mo
    \alpha(t) = \alpha_{\infty} \left( 1 - \frac{\gamma}{t + \tau} \right)
 \end{equation}
 
-where $\alpha_{\infty} \in [0,\,1]$ determines the asymptotic momentum coefficient and $\tau \geq 1$ and $0 \leq \gamma \leq \tau$ determine the initial momentum coefficient and quickly the coefficient tends to $\alpha_{\infty}$.
+where $\alpha_{\infty} \in [0,\,1]$ determines the asymptotic momentum coefficient and $\tau \geq 1$ and $0 \leq \gamma \leq \tau$ determine the initial momentum coefficient and how quickly the coefficient tends to $\alpha_{\infty}$.
 
 You should create a scheduler class which implements the above momentum coefficient schedule by adding a further definition to the `mlp.schedulers` module. This should have the same interface as the learning rate scheduler implemented in the previous part.
 
