@@ -1,4 +1,5 @@
 import tensorflow as tf
+import sys
 import os
 import datetime
 from mlp.data_providers import CIFAR10DataProvider, CIFAR100DataProvider
@@ -37,9 +38,9 @@ for nonlinear_arr in nonlinear_arrs:
         with tf.name_scope('fc-layer-1'):
             hidden_1 = fully_connected_layer(inputs, train_data.inputs.shape[1], num_hidden, commands[nonlinear_arr])
         with tf.name_scope('fc-layer-2'):
-            hidden_2 = fully_connected_layer(hidden_1, train_data.inputs.shape[1], num_hidden, commands[nonlinear_arr])
+            hidden_2 = fully_connected_layer(hidden_1, num_hidden, num_hidden, commands[nonlinear_arr])
         with tf.name_scope('fc-layer-3'):
-            hidden_3 = fully_connected_layer(hidden_2, train_data.inputs.shape[1], num_hidden, commands[nonlinear_arr])
+            hidden_3 = fully_connected_layer(hidden_2, num_hidden, num_hidden, commands[nonlinear_arr])
         with tf.name_scope('output-layer'):
             outputs = fully_connected_layer(hidden_3, num_hidden, train_data.num_classes, tf.identity)
         with tf.name_scope('error'):

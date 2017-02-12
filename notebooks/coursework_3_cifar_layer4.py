@@ -1,4 +1,5 @@
 import tensorflow as tf
+import sys
 import os
 import datetime
 from mlp.data_providers import CIFAR10DataProvider, CIFAR100DataProvider 
@@ -20,18 +21,17 @@ commands = {
 
 
 for nonlinear_arr in nonlinear_arrs:
-
+    graph = tf.Graph()
     if (str(sys.argv[1])=='10'):
-    train_data = CIFAR10DataProvider('train', batch_size=50)
-    valid_data = CIFAR10DataProvider('valid', batch_size=50)
-    dataset ='C10'
+        train_data = CIFAR10DataProvider('train', batch_size=50)
+        valid_data = CIFAR10DataProvider('valid', batch_size=50)
+        dataset ='C10'
 
     if (str(sys.argv[1])=='100'):
-    train_data = CIFAR100DataProvider('train', batch_size=50)
-    valid_data = CIFAR100DataProvider('valid', batch_size=50)
-    dataset ='C100'
-
-    graph = tf.Graph()
+        train_data = CIFAR100DataProvider('train', batch_size=50)
+        valid_data = CIFAR100DataProvider('valid', batch_size=50)
+        dataset ='C100'
+    
     with graph.as_default():
         with tf.name_scope('data'):
             inputs = tf.placeholder(tf.float32, [None, train_data.inputs.shape[1]], 'inputs')

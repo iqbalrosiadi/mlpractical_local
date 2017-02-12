@@ -19,7 +19,6 @@ commands = {
 }
 
 
-print(str(sys.argv[1]))
 
 for nonlinear_arr in nonlinear_arrs:
     graph = tf.Graph()
