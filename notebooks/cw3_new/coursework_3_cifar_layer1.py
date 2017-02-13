@@ -6,7 +6,7 @@ from decimal import Decimal
 from mlp.data_providers import CIFAR10DataProvider, CIFAR100DataProvider 
 from mlp.local_foo import get_err_and_acc, fully_connected_layer
 
-nonlinear_arrs = ['tf.nn.relu6', 'tf.tanh', 'tf.nn.relu']
+nonlinear_arrs = ['tf.nn.relu', 'tf.nn.relu6']
 num_epoch = Decimal(str(sys.argv[2]))
 num_hidden = 200
 commands = {
