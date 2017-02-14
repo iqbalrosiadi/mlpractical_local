@@ -1,0 +1,14 @@
+nohup nice -n 10 python coursework_3_cifar_layer1.py 100 50 > status10.log &
+nohup nice -n 10 python coursework_3_cifar_layer1a.py 100 50 > status100.log &
+nohup nice -n 10 python coursework_3_cifar_layer1b.py 100 50 > status100b.log &
+nohup nice -n 10 python coursework_3_cifar_layer2.py 100 50 > status20.log &
+nohup nice -n 10 python coursework_3_cifar_layer2a.py 100 50 > status200.log &
+nohup nice -n 10 python coursework_3_cifar_layer2b.py 100 50 > status200b.log &
+nohup nice -n 10 python coursework_3_cifar_layer3.py 100 50 > status30.log &
+nohup nice -n 10 python coursework_3_cifar_layer3a.py 100 50 > status300.log &
+nohup nice -n 10 python coursework_3_cifar_layer3b.py 100 50 > status300b.log &
+nohup nice -n 10 python coursework_3_cifar_layer4.py 100 50 > status40.log &
+nohup nice -n 10 python coursework_3_cifar_layer4a.py 100 50 > status400.log &
+nohup nice -n 10 python coursework_3_cifar_layer4b.py 100 50 > status400b.log &
+nohup nice -n 10 python coursework_3_cifar_layer5.py 100 50 > status50.log &
+nohup nice -n 10 python coursework_3_cifar_layer5a.py 100 50 > status500.log &
