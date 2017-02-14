@@ -12,3 +12,4 @@ nohup nice -n 10 python coursework_3_cifar_layer4a.py 100 50 > status400.log &
 nohup nice -n 10 python coursework_3_cifar_layer4b.py 100 50 > status400b.log &
 nohup nice -n 10 python coursework_3_cifar_layer5.py 100 50 > status50.log &
 nohup nice -n 10 python coursework_3_cifar_layer5a.py 100 50 > status500.log &
+nohup nice -n 10 python coursework_3_cifar_layer5b.py 100 50 > status500.log &
