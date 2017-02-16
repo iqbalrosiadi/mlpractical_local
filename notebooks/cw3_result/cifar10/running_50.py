@@ -1,0 +1,15 @@
+python coursework_3_cifar_layer1.py 10 50 > status10.log
+python coursework_3_cifar_layer1a.py 10 50 > status100.log
+python coursework_3_cifar_layer1b.py 10 50 > status100b.log
+python coursework_3_cifar_layer2.py 10 50 > status20.log
+python coursework_3_cifar_layer2a.py 10 50 > status200.log
+python coursework_3_cifar_layer2b.py 10 50 > status200b.log
+python coursework_3_cifar_layer3.py 10 50 > status30.log
+python coursework_3_cifar_layer3a.py 10 50 > status300.log
+python coursework_3_cifar_layer3b.py 10 50 > status300b.log
+python coursework_3_cifar_layer4.py 10 50 > status40.log
+python coursework_3_cifar_layer4a.py 10 50 > status400.log
+python coursework_3_cifar_layer4b.py 10 50 > status400b.log
+python coursework_3_cifar_layer5.py 10 50 > status50.log
+python coursework_3_cifar_layer5a.py 10 50 > status500.log
+python coursework_3_cifar_layer5b.py 10 50 > status500b.log
