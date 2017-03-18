@@ -16,6 +16,21 @@ assert 'OUTPUT_DIR' in os.environ, (
     'An environment variable OUTPUT_DIR must be set to the path to write'
     ' output to before running script.')
 
+nonlinear_arr = 'tf.nn.relu'
+learning_rate = 0.001
+num_epoch = 100
+dropout = 0.75 # Dropout, probability to keep units
+keep_prob = tf.placeholder(tf.float32) #dropout (keep probability)
+commands = {
+    'tf.nn.relu' : tf.nn.relu,
+    'tf.tanh' : tf.tanh,
+    'tf.nn.crelu' : tf.nn.crelu,
+    'tf.nn.relu6' : tf.nn.relu6,
+    'tf.sigmoid' : tf.sigmoid,
+    'tf.nn.softplus' : tf.nn.softplus,
+    'tf.nn.softsign' : tf.nn.softsign
+}
+
 graph = tf.Graph()
 if (str(sys.argv[1])=='10'):
     train_data = CIFAR10DataProvider('train', batch_size=50)
@@ -52,20 +67,7 @@ def maxpool2d(x, k=3, s=2):
 def norm(layer, lsize) :
     return tf.nn.lrn(layer, lsize, bias=2.0, alpha=0.001 / 9.0, beta=0.75)
 
-nonlinear_arr = 'tf.nn.relu'
-learning_rate = 0.001
-num_epoch = 1
-dropout = 0.5 # Dropout, probability to keep units
-keep_prob = tf.placeholder(tf.float32) #dropout (keep probability)
-commands = {
-    'tf.nn.relu' : tf.nn.relu,
-    'tf.tanh' : tf.tanh,
-    'tf.nn.crelu' : tf.nn.crelu,
-    'tf.nn.relu6' : tf.nn.relu6,
-    'tf.sigmoid' : tf.sigmoid,
-    'tf.nn.softplus' : tf.nn.softplus,
-    'tf.nn.softsign' : tf.nn.softsign
-}
+
 
 # Store layers weight & bias
 weights = {
