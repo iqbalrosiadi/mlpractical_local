@@ -81,7 +81,7 @@ weights = {
     # fully connected, 7*7*64 inputs, 1024 outputs
     #'wd1': tf.Variable(tf.random_normal([4*4*64, 4096])),
     # fully connected, 7*7*64 inputs, 1024 outputs
-    'wd1': tf.Variable(tf.truncated_normal([8192, 2048], stddev=2. / (4096 + 2048)**0.5)),
+    'wd1': tf.Variable(tf.truncated_normal([2048, 2048], stddev=2. / (4096 + 2048)**0.5)),
     'wd2': tf.Variable(tf.truncated_normal([2048, 1024], stddev=2. / (2048 + 1024)**0.5)),
     # 1024 inputs, 10 outputs (class prediction)
     'out': tf.Variable(tf.random_normal([1024, train_data.num_classes]))
