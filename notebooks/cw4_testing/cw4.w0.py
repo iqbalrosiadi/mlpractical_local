@@ -53,8 +53,8 @@ def norm(layer, lsize) :
     return tf.nn.lrn(layer, lsize, bias=2.0, alpha=0.001 / 9.0, beta=0.75)
 
 nonlinear_arr = 'tf.nn.relu'
-learning_rate = 0.0001
-num_epoch = 5
+learning_rate = 0.001
+num_epoch = 1
 dropout = 0.5 # Dropout, probability to keep units
 keep_prob = tf.placeholder(tf.float32) #dropout (keep probability)
 commands = {
@@ -74,8 +74,9 @@ weights = {
     'wc1a': tf.Variable(tf.truncated_normal([3, 3, 32, 32], stddev=.1)),
     # 5x5 conv, 32 inputs, 64 outputs
     'wc2': tf.Variable(tf.truncated_normal([3, 3, 32, 64], stddev=.1)),
-    'wc2a': tf.Variable(tf.truncated_normal([3, 3, 32, 64], stddev=.1)),
+    'wc2a': tf.Variable(tf.truncated_normal([3, 3, 64, 64], stddev=.1)),
     'wc3': tf.Variable(tf.truncated_normal([3, 3, 64, 128], stddev=.1)),
+    'wc3a': tf.Variable(tf.truncated_normal([3, 3, 128, 128], stddev=.1)),
     #'wc4': tf.Variable(tf.random_normal([3, 3, 384, 384]))
     # fully connected, 7*7*64 inputs, 1024 outputs
     #'wd1': tf.Variable(tf.random_normal([4*4*64, 4096])),
@@ -120,8 +121,8 @@ with tf.name_scope('data'):
 with tf.name_scope('conv-stack-1'):
     conv1 = conv2d(inputs, weights['wc1'], biases['bc1'])
     print "conv1.shape:", conv1.get_shape()
-    conv1 = conv2d(inputs, weights['wc1'], biases['bc1'])
-     print "conv1.shape:", conv1.get_shape()
+    conv1 = conv2d(conv1, weights['wc1a'], biases['bc1'])
+    print "conv1.shape:", conv1.get_shape()
     h_pool_conv1 = maxpool2d(conv1, k=2)
     print "h_pool_conv1.shape:", h_pool_conv1.get_shape()
     do_fc1 = tf.nn.dropout(h_pool_conv1, dropout)
@@ -129,23 +130,38 @@ with tf.name_scope('conv-stack-1'):
     norm1 = norm(do_fc1, 4)
     print "norm1.shape:", norm1.get_shape()
 
-
 ########################
 #Layer 2 CONV>POOL>NORM
 ########################
 with tf.name_scope('conv-stack-2'):
     conv2 = conv2d(norm1, weights['wc2'], biases['bc2'])
     print "conv2.shape:", conv2.get_shape()
-    conv3 = conv2d(conv2, weights['wc3'], biases['bc3'])
-    print "conv3.shape:", conv2.get_shape()
-    norm2 = norm(conv3, 4)
-    print "norm1.shape:", norm1.get_shape()
+    conv2a = conv2d(conv2, weights['wc2a'], biases['bc2'])
+    print "conv3.shape:", conv2a.get_shape()
+    norm2 = norm(conv2a, 4)
+    print "norm1.shape:", norm2.get_shape()
     h_pool_conv2 = maxpool2d(norm2, k=2)
     print "h_pool_conv2.shape:", h_pool_conv2.get_shape()
-    do_fc1 = tf.nn.dropout(h_pool_conv2, dropout)
+    do_fc2 = tf.nn.dropout(h_pool_conv2, dropout)
     print "do_fc1.shape:", do_fc1.get_shape()
-    pool5Shape = do_fc1.get_shape().as_list()
+    
 
+########################
+#Layer 3 CONV>POOL>NORM
+########################
+with tf.name_scope('conv-stack-3'):
+    conv3 = conv2d(do_fc2, weights['wc3'], biases['bc3'])
+    print "conv2.shape:", conv2.get_shape()
+    conv3a = conv2d(conv3, weights['wc3a'], biases['bc3'])
+    print "conv3.shape:", conv2.get_shape()
+    norm2 = norm(conv3a, 4)
+    print "norm1.shape:", norm2.get_shape()
+    h_pool_conv2 = maxpool2d(norm2, k=2)
+    print "h_pool_conv2.shape:", h_pool_conv2.get_shape()
+    do_fc3 = tf.nn.dropout(h_pool_conv2, dropout)
+    print "do_fc1.shape:", do_fc3.get_shape()
+    pool5Shape = do_fc3.get_shape().as_list()
+    
 
 
 ########################
