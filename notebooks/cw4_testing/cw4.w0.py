@@ -53,9 +53,9 @@ def norm(layer, lsize) :
     return tf.nn.lrn(layer, lsize, bias=2.0, alpha=0.001 / 9.0, beta=0.75)
 
 nonlinear_arr = 'tf.nn.relu'
-learning_rate = 0.001
-num_epoch = 100
-dropout = 0.75 # Dropout, probability to keep units
+learning_rate = 0.0001
+num_epoch = 5
+dropout = 0.5 # Dropout, probability to keep units
 keep_prob = tf.placeholder(tf.float32) #dropout (keep probability)
 commands = {
     'tf.nn.relu' : tf.nn.relu,
@@ -70,10 +70,12 @@ commands = {
 # Store layers weight & bias
 weights = {
     # 5x5 conv, 1 input, 32 outputs
-    'wc1': tf.Variable(tf.random_normal([3, 3, 3, 32])),
+    'wc1': tf.Variable(tf.truncated_normal([3, 3, 3, 32], stddev=.1)),
+    'wc1a': tf.Variable(tf.truncated_normal([3, 3, 32, 32], stddev=.1)),
     # 5x5 conv, 32 inputs, 64 outputs
-    'wc2': tf.Variable(tf.random_normal([3, 3, 32, 64])),
-    'wc3': tf.Variable(tf.random_normal([3, 3, 64, 128])),
+    'wc2': tf.Variable(tf.truncated_normal([3, 3, 32, 64], stddev=.1)),
+    'wc2a': tf.Variable(tf.truncated_normal([3, 3, 32, 64], stddev=.1)),
+    'wc3': tf.Variable(tf.truncated_normal([3, 3, 64, 128], stddev=.1)),
     #'wc4': tf.Variable(tf.random_normal([3, 3, 384, 384]))
     # fully connected, 7*7*64 inputs, 1024 outputs
     #'wd1': tf.Variable(tf.random_normal([4*4*64, 4096])),
@@ -118,6 +120,8 @@ with tf.name_scope('data'):
 with tf.name_scope('conv-stack-1'):
     conv1 = conv2d(inputs, weights['wc1'], biases['bc1'])
     print "conv1.shape:", conv1.get_shape()
+    conv1 = conv2d(inputs, weights['wc1'], biases['bc1'])
+     print "conv1.shape:", conv1.get_shape()
     h_pool_conv1 = maxpool2d(conv1, k=2)
     print "h_pool_conv1.shape:", h_pool_conv1.get_shape()
     do_fc1 = tf.nn.dropout(h_pool_conv1, dropout)
