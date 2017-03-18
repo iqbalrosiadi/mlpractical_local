@@ -1,7 +1,8 @@
 #!/disk/scratch/mlp/miniconda2/bin/python
 import os
 import sys
-import datetime
+#import datetime
+import time
 import numpy as np
 import matplotlib.pyplot as plt
 import tensorflow as tf
@@ -228,8 +229,10 @@ valid_error = np.zeros(num_epoch)
 
 sess = tf.Session()
 sess.run(tf.global_variables_initializer())
+start_run_time = time.time()
 step = 0
 for e in range(num_epoch):
+    start_time = time.time()
     for b, (input_batch, target_batch) in enumerate(train_data):
         # do train step with current batch
         _, summary, batch_error, batch_acc = sess.run(
@@ -240,6 +243,10 @@ for e in range(num_epoch):
         train_error[e] += batch_error
         train_accuracy[e] += batch_acc
         step += 1
+
+    #time    
+    epoch_time = time.time()-start_time
+    start_time = time.time()
     # normalise running means by number of batches
     train_error[e] /= train_data.num_batches
     train_accuracy[e] /= train_data.num_batches
@@ -251,8 +258,8 @@ for e in range(num_epoch):
     # checkpoint model variables
     saver.save(sess, os.path.join(checkpoint_dir, 'model.ckpt'), step)
     # write stats summary to stdout
-    print('Epoch {0:02d}: err(train)={1:.2f} acc(train)={2:.2f} step={3:.2f}'
-          .format(e + 1, train_error[e], train_accuracy[e], step))
+    print('Epoch {0:02d}: err(train)={1:.2f} acc(train)={2:.2f} step={3:.2f} time={4:.2f}s'
+          .format(e + 1, train_error[e], train_accuracy[e], step, epoch_time))
     print('          err(valid)={0:.2f} acc(valid)={1:.2f}'
           .format(valid_error[e], valid_accuracy[e]))
 
