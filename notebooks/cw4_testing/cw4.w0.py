@@ -1,7 +1,7 @@
 #!/disk/scratch/mlp/miniconda2/bin/python
 import os
 import sys
-#import datetime
+import datetime
 import time
 import numpy as np
 import matplotlib.pyplot as plt
