@@ -103,9 +103,9 @@ biases = {
     'bc1': tf.Variable(tf.random_normal([192])),
     'bc2': tf.Variable(tf.random_normal([240])),
     'bc3': tf.Variable(tf.random_normal([260])),
-    'bd1': tf.Variable(tf.random_normal([280])),
-    'bd2': tf.Variable(tf.random_normal([300])),
-    'bd3': tf.Variable(tf.random_normal([100])),
+    'bc4': tf.Variable(tf.random_normal([280])),
+    'bd1': tf.Variable(tf.random_normal([300])),
+    'bd2': tf.Variable(tf.random_normal([100])),
     'out': tf.Variable(tf.random_normal([train_data.num_classes]))
 }
 
@@ -176,11 +176,11 @@ with tf.name_scope('conv-stack-3'):
 ########################
 #Layer 4 CONV>POOL>NORM
 ########################
-with tf.name_scope('conv-stack-3'):
+with tf.name_scope('conv-stack-4'):
     conv4 = conv2d(do_fc3, weights['wc3'], biases['bc3'])
     print "conv4.shape:", conv4.get_shape()
     conv4a = conv2d(conv4, weights['wc3b'], biases['bc4'])
-    print "conv3.shape:", conv2.get_shape()
+    print "conv4a.shape:", conv4a.get_shape()
     norm4 = norm(conv4a, 4)
     print "norm4.shape:", norm4.get_shape()
     h_pool_conv4 = maxpool2d(norm4, k=2)
@@ -191,7 +191,7 @@ with tf.name_scope('conv-stack-3'):
 ########################
 #Layer 5 CONV>POOL>NORM
 ########################
-with tf.name_scope('conv-stack-3'):
+with tf.name_scope('conv-stack-5'):
     conv5 = conv2d(do_fc4, weights['wc4'], biases['bc4'])
     print "conv5.shape:", conv5.get_shape()
     conv5a = conv2d(conv5, weights['wc4b'], biases['bd1'])
