@@ -73,7 +73,7 @@ def norm(layer, lsize) :
 # Store layers weight & bias
 weights = {
     # 5x5 conv, 1 input, 32 outputs
-    'wc0': tf.Variable(tf.truncated_normal([5, 5, 3, 32], stddev=.1)),
+    'wc0': tf.Variable(tf.truncated_normal([3, 3, 3, 32], stddev=.1)),
     # 5x5 conv, 1 input, 32 outputs
     'wc1': tf.Variable(tf.truncated_normal([1, 1, 32, 192], stddev=.1)),
     'wc1b': tf.Variable(tf.truncated_normal([3, 3, 192, 240], stddev=.1)),
