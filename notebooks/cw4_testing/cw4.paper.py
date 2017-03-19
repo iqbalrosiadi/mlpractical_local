@@ -212,7 +212,7 @@ with tf.name_scope('conv-stack-5'):
 with tf.name_scope('fc-layer-1'):
     flat_fc1 = tf.reshape(do_fc5, [-1, pool5Shape[1]*pool5Shape[2]*pool5Shape[3] ])#weights['wd1'].get_shape().as_list()[0]]) #3136
     print "flat_fc1.shape:", flat_fc1.get_shape()
-    fc1 = tf.add(tf.matmul(flat_fc1, weights['wd2']), biases['bd3x'])
+    fc1 = tf.add(tf.matmul(flat_fc1, weights['wd2']), biases['bd3'])
     print "fc1.shape:", fc1.get_shape()
     relu_fc1 = tf.nn.relu(fc1)
     print "relu_fc1.shape:", relu_fc1.get_shape()
