@@ -68,7 +68,20 @@ def maxpool2d(x, k=3, s=2):
 def norm(layer, lsize) :
     return tf.nn.lrn(layer, lsize, bias=2.0, alpha=0.001 / 9.0, beta=0.75)
 
-
+def create_kaggle_submission_file(predictions, output_file, overwrite=False):
+    if predictions.shape != (10000, 100):
+        raise ValueError('predictions should be an array of shape (10000, 25).')
+    if not (np.all(predictions >= 0.) and 
+            np.all(predictions <= 1.)):
+        raise ValueError('predictions should be an array of probabilities in [0, 1].')
+    if not np.allclose(predictions.sum(-1), 1):
+        raise ValueError('predictions rows should sum to one.')
+    if os.path.exists(output_file) and not overwrite:
+        raise ValueError('File already exists at {0}'.format(output_file))
+    pred_classes = predictions.argmax(-1)
+    ids = np.arange(pred_classes.shape[0])
+    np.savetxt(output_file, np.column_stack([ids, pred_classes]), fmt='%d',
+               delimiter=',', header='Id,Class', comments='')
 
 # Store layers weight & bias
 weights = {
@@ -263,8 +276,8 @@ for e in range(num_epoch):
     if (valid_error[e] <= min_val_error):
         lowest_epoch = e
         min_val_error = valid_error[e]
-        #test_predictions = sess.run(tf.nn.softmax(outputs), feed_dict={inputs: test_inputs})
-        #create_kaggle_submission_file(test_predictions, 'cifar-'+dataset+'-example-network-submission.csv', True)          
+        test_predictions = sess.run(tf.nn.softmax(outputs), feed_dict={inputs: test_inputs})
+        create_kaggle_submission_file(test_predictions, 'cifar-'+dataset+'-example-network-submission.csv', True)          
       
     elif (e - lowest_epoch >=20):
         stopping = 1
