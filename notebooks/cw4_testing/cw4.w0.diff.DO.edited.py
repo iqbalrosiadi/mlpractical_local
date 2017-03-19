@@ -36,10 +36,12 @@ graph = tf.Graph()
 if (str(sys.argv[1])=='10'):
     train_data = CIFAR10DataProvider('train', batch_size=50)
     valid_data = CIFAR10DataProvider('valid', batch_size=50)
+    test_inputs = np.load(os.path.join(os.environ['MLP_DATA_DIR'], 'cifar-10-test-inputs.npz'))['inputs']
     dataset ='C10'
 if (str(sys.argv[1])=='100'):
     train_data = CIFAR100DataProvider('train', batch_size=50)
     valid_data = CIFAR100DataProvider('valid', batch_size=50)
+    test_inputs = np.load(os.path.join(os.environ['MLP_DATA_DIR'], 'cifar-100-test-inputs.npz'))['inputs']
     dataset ='C100'
 
 train_data.inputs = train_data.inputs.reshape((-1, 1024, 3), order='F')
@@ -277,7 +279,7 @@ for e in range(num_epoch):
         lowest_epoch = e
         min_val_error = valid_error[e]
         test_predictions = sess.run(tf.nn.softmax(outputs), feed_dict={inputs: test_inputs})
-        create_kaggle_submission_file(test_predictions, 'cifar-'+dataset+'-example-network-submission.csv', True)          
+        create_kaggle_submission_file(test_predictions, 'cifar-10-example-network-submission.csv', True)          
       
     elif (e - lowest_epoch >=20):
         stopping = 1
