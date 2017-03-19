@@ -172,7 +172,7 @@ with tf.name_scope('conv-stack-2'):
 ########################
 with tf.name_scope('conv-stack-3'):
     conv3 = conv2d(do_fc2, weights['wc3'], biases['bc3'])
-    print "conv3.shape:", conv31.get_shape()
+    print "conv3.shape:", conv3.get_shape()
     conv3a = conv2d(conv3, weights['wc3a'], biases['bc3'])
     print "conv3a.shape:", conv3a.get_shape()
     norm3 = norm(conv3a, 4)
