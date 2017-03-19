@@ -20,7 +20,7 @@ assert 'OUTPUT_DIR' in os.environ, (
 nonlinear_arr = 'tf.nn.relu'
 learning_rate = 0.001
 num_epoch = 100
-dropout =  [ .75, .75, .75, .75]# Dropout, probability to keep units
+dropout =  [ .75, .75, .75, .75, .75, .5, .5, .5]# Dropout, probability to keep units
 keep_prob = tf.placeholder(tf.float32) #dropout (keep probability)
 commands = {
     'tf.nn.relu' : tf.nn.relu,
@@ -102,13 +102,13 @@ weights = {
     'wc4': tf.Variable(tf.truncated_normal([3, 3, 128, 256], stddev=.1)),
     'wc4a': tf.Variable(tf.truncated_normal([3, 3, 256, 256], stddev=.1)),
     # 5x5 conv, 32 inputs, 64 outputs
-    'wc5': tf.Variable(tf.truncated_normal([3, 3, 128, 256], stddev=.1)),
+    'wc5': tf.Variable(tf.truncated_normal([3, 3, 256, 256], stddev=.1)),
     'wc5a': tf.Variable(tf.truncated_normal([3, 3, 256, 256], stddev=.1)),
     #'wc4': tf.Variable(tf.random_normal([3, 3, 384, 384]))
     # fully connected, 7*7*64 inputs, 1024 outputs
     #'wd1': tf.Variable(tf.random_normal([4*4*64, 4096])),
     # fully connected, 7*7*64 inputs, 1024 outputs
-    'wd1': tf.Variable(tf.truncated_normal([2048, 2048], stddev=2. / (2048 + 2048)**0.5)),
+    'wd1': tf.Variable(tf.truncated_normal([256, 2048], stddev=2. / (256 + 2048)**0.5)),
     'wd2': tf.Variable(tf.truncated_normal([2048, 1024], stddev=2. / (2048 + 1024)**0.5)),
     # 1024 inputs, 10 outputs (class prediction)
     'out': tf.Variable(tf.random_normal([1024, train_data.num_classes]))
@@ -118,7 +118,7 @@ biases = {
     'bc1': tf.Variable(tf.random_normal([32])),
     'bc2': tf.Variable(tf.random_normal([64])),
     'bc3': tf.Variable(tf.random_normal([128])),
-    'bc4': tf.Variable(tf.random_normal([128])),
+    'bc4': tf.Variable(tf.random_normal([256])),
     'bd1': tf.Variable(tf.random_normal([2048])),
     'bd2': tf.Variable(tf.random_normal([1024])),
     'out': tf.Variable(tf.random_normal([train_data.num_classes]))
@@ -176,40 +176,40 @@ with tf.name_scope('conv-stack-3'):
     h_pool_conv3 = maxpool2d(norm3, k=2)
     print "h_pool_conv3.shape:", h_pool_conv3.get_shape()
     do_fc3 = tf.nn.dropout(h_pool_conv3, dropout[2])
-    print "do_fc1.shape:", do_fc3.get_shape()
+    print "do_fc3.shape:", do_fc3.get_shape()
 
 
 ########################
 #Layer 4 CONV>POOL>NORM
 ########################
-with tf.name_scope('conv-stack-3'):
-    conv3 = conv2d(do_fc2, weights['wc3'], biases['bc3'])
-    print "conv3.shape:", conv3.get_shape()
-    conv3a = conv2d(conv3, weights['wc3a'], biases['bc3'])
-    print "conv3a.shape:", conv3a.get_shape()
-    norm3 = norm(conv3a, 4)
-    print "norm3.shape:", norm3.get_shape()
-    h_pool_conv3 = maxpool2d(norm3, k=2)
-    print "h_pool_conv3.shape:", h_pool_conv3.get_shape()
-    do_fc3 = tf.nn.dropout(h_pool_conv3, dropout[2])
-    print "do_fc1.shape:", do_fc3.get_shape()
+with tf.name_scope('conv-stack-4'):
+    conv4 = conv2d(do_fc3, weights['wc4'], biases['bc4'])
+    print "conv4.shape:", conv4.get_shape()
+    conv4a = conv2d(conv4, weights['wc4a'], biases['bc4'])
+    print "conv4a.shape:", conv4a.get_shape()
+    norm4 = norm(conv4a, 4)
+    print "norm4.shape:", norm4.get_shape()
+    h_pool_conv4 = maxpool2d(norm4, k=2)
+    print "h_pool_conv4.shape:", h_pool_conv4.get_shape()
+    do_fc4 = tf.nn.dropout(h_pool_conv4, dropout[3])
+    print "do_fc4.shape:", do_fc4.get_shape()
 
 
 ########################
 #Layer 5 CONV>POOL>NORM
 ########################
-with tf.name_scope('conv-stack-3'):
-    conv3 = conv2d(do_fc2, weights['wc3'], biases['bc3'])
-    print "conv3.shape:", conv3.get_shape()
-    conv3a = conv2d(conv3, weights['wc3a'], biases['bc3'])
-    print "conv3a.shape:", conv3a.get_shape()
-    norm3 = norm(conv3a, 4)
-    print "norm3.shape:", norm3.get_shape()
-    h_pool_conv3 = maxpool2d(norm3, k=2)
-    print "h_pool_conv3.shape:", h_pool_conv3.get_shape()
-    do_fc3 = tf.nn.dropout(h_pool_conv3, dropout[2])
-    print "do_fc1.shape:", do_fc3.get_shape()
-    pool5Shape = do_fc3.get_shape().as_list()
+with tf.name_scope('conv-stack-5'):
+    conv5 = conv2d(do_fc4, weights['wc5'], biases['bc4'])
+    print "conv5.shape:", conv5.get_shape()
+    conv5a = conv2d(conv5, weights['wc5a'], biases['bc4'])
+    print "conv5a.shape:", conv5a.get_shape()
+    norm5 = norm(conv5a, 4)
+    print "norm5.shape:", norm5.get_shape()
+    h_pool_conv5 = maxpool2d(norm5, k=2)
+    print "h_pool_conv5.shape:", h_pool_conv5.get_shape()
+    do_fc5 = tf.nn.dropout(h_pool_conv5, dropout[4])
+    print "do_fc5.shape:", do_fc5.get_shape()
+    pool5Shape = do_fc5.get_shape().as_list()
     
 
 
@@ -217,13 +217,13 @@ with tf.name_scope('conv-stack-3'):
 #Layer 1 FC
 ########################
 with tf.name_scope('fc-layer-1'):
-    flat_fc1 = tf.reshape(do_fc3, [-1, pool5Shape[1]*pool5Shape[2]*pool5Shape[3] ])#weights['wd1'].get_shape().as_list()[0]]) #3136
+    flat_fc1 = tf.reshape(do_fc5, [-1, pool5Shape[1]*pool5Shape[2]*pool5Shape[3] ])#weights['wd1'].get_shape().as_list()[0]]) #3136
     print "flat_fc1.shape:", flat_fc1.get_shape()
     fc1 = tf.add(tf.matmul(flat_fc1, weights['wd1']), biases['bd1'])
     print "fc1.shape:", fc1.get_shape()
     relu_fc1 = tf.nn.relu(fc1)
     print "relu_fc1.shape:", relu_fc1.get_shape()
-    #do_fc1 = tf.nn.dropout(relu_fc1, dropout)
+    do_fc1 = tf.nn.dropout(relu_fc1, dropout[5])
 
 with tf.name_scope('fc-layer-2'):
     #flat_fc2 = tf.reshape(relu_fc1, weights['wd2'].get_shape().as_list()[0]) #3136
@@ -232,7 +232,7 @@ with tf.name_scope('fc-layer-2'):
     print "fc2.shape:", fc2.get_shape()
     relu_fc2 = tf.identity(fc2)
     print "relu_fc2.shape:", relu_fc2.get_shape()
-    #do_fc2 = tf.nn.dropout(relu_fc2, dropout)
+    do_fc2 = tf.nn.dropout(relu_fc2, dropout[6])
 
 with tf.name_scope('output'):
     print "do_fc1.shape:", relu_fc2.get_shape()
