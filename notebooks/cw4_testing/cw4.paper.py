@@ -210,24 +210,24 @@ with tf.name_scope('conv-stack-5'):
 with tf.name_scope('fc-layer-1'):
     flat_fc1 = tf.reshape(do_fc5, [-1, pool5Shape[1]*pool5Shape[2]*pool5Shape[3] ])#weights['wd1'].get_shape().as_list()[0]]) #3136
     print "flat_fc1.shape:", flat_fc1.get_shape()
-    fc1 = tf.add(tf.matmul(flat_fc1, weights['wd1']), biases['bd1'])
+    fc1 = tf.add(tf.matmul(flat_fc1, weights['wd2']), biases['bd2'])
     print "fc1.shape:", fc1.get_shape()
     relu_fc1 = tf.nn.relu(fc1)
     print "relu_fc1.shape:", relu_fc1.get_shape()
     #do_fc1 = tf.nn.dropout(relu_fc1, dropout)
 
-with tf.name_scope('fc-layer-2'):
-    #flat_fc2 = tf.reshape(relu_fc1, weights['wd2'].get_shape().as_list()[0]) #3136
-    #   print "flat_fc2.shape:", flat_fc1.get_shape()
-    fc2 = tf.add(tf.matmul(relu_fc1, weights['wd2']), biases['bd2'])
-    print "fc2.shape:", fc2.get_shape()
-    relu_fc2 = tf.identity(fc2)
-    print "relu_fc2.shape:", relu_fc2.get_shape()
-    #do_fc2 = tf.nn.dropout(relu_fc2, dropout)
+#with tf.name_scope('fc-layer-2'):
+#    #flat_fc2 = tf.reshape(relu_fc1, weights['wd2'].get_shape().as_list()[0]) #3136
+#    #   print "flat_fc2.shape:", flat_fc1.get_shape()
+#    fc2 = tf.add(tf.matmul(relu_fc1, weights['wd2']), biases['bd2'])
+#    print "fc2.shape:", fc2.get_shape()
+#    relu_fc2 = tf.identity(fc2)
+#    print "relu_fc2.shape:", relu_fc2.get_shape()
+#    #do_fc2 = tf.nn.dropout(relu_fc2, dropout)
 
 with tf.name_scope('output'):
-    print "do_fc1.shape:", relu_fc2.get_shape()
-    outputs = tf.add(tf.matmul(relu_fc2, weights['out']), biases['out'])
+    print "do_fc1.shape:", relu_fc1.get_shape()
+    outputs = tf.add(tf.matmul(relu_fc1, weights['out']), biases['out'])
     print "outputs.shape:", outputs.get_shape()
 
     
