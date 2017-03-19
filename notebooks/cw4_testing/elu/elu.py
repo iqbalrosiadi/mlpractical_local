@@ -26,7 +26,7 @@ commands = {
     'tf.nn.elu' : tf.nn.elu,
     'tf.tanh' : tf.tanh,
     'tf.nn.crelu' : tf.nn.crelu,
-    'tf.nn.elu6' : tf.nn.elu6,
+    'tf.nn.elu' : tf.nn.elu,
     'tf.sigmoid' : tf.sigmoid,
     'tf.nn.softplus' : tf.nn.softplus,
     'tf.nn.softsign' : tf.nn.softsign
