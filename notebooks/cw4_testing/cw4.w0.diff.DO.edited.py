@@ -37,8 +37,8 @@ if (str(sys.argv[1])=='10'):
     train_data = CIFAR10DataProvider('train', batch_size=50)
     valid_data = CIFAR10DataProvider('valid', batch_size=50)
     test_inputs = np.load(os.path.join(os.environ['MLP_DATA_DIR'], 'cifar-10-test-inputs.npz'))['inputs']
-    test_inputs.inputs = test_inputs.inputs.reshape((-1, 1024, 3), order='F')
-    test_inputs.inputs = test_inputs.inputs.reshape((-1,32,32,3))
+    test_inputs = test_inputs.reshape((-1, 1024, 3), order='F')
+    test_inputs = test_inputs.reshape((-1,32,32,3))
     dataset ='C10'
 if (str(sys.argv[1])=='100'):
     train_data = CIFAR100DataProvider('train', batch_size=50)
