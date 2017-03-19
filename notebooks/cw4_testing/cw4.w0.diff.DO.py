@@ -173,7 +173,7 @@ with tf.name_scope('conv-stack-3'):
     conv3a = conv2d(conv3, weights['wc3a'], biases['bc3'])
     print "conv3a.shape:", conv3a.get_shape()
     norm3 = norm(conv3a, 4)
-    print "norm2.shape:", norm2.get_shape()
+    print "norm3.shape:", norm3.get_shape()
     h_pool_conv3 = maxpool2d(norm3, k=2)
     print "h_pool_conv3.shape:", h_pool_conv3.get_shape()
     do_fc3 = tf.nn.dropout(h_pool_conv3, dropout[2])
@@ -275,15 +275,15 @@ for e in range(num_epoch):
     # checkpoint model variables
     saver.save(sess, os.path.join(checkpoint_dir, 'model.ckpt'), step)
     #stopping
-    if (valid_error[e] <= min_val_error):
-                    lowest_epoch = e
-                    min_val_error = valid_error[e]
-                    test_predictions = sess.run(tf.nn.softmax(outputs), feed_dict={inputs: test_inputs})
-                    create_kaggle_submission_file(test_predictions, 'cifar-'+dataset+'-example-network-submission.csv', True)          
+    #if (valid_error[e] <= min_val_error):
+                    #lowest_epoch = e
+                    #min_val_error = valid_error[e]
+                    #test_predictions = sess.run(tf.nn.softmax(outputs), feed_dict={inputs: test_inputs})
+                    #create_kaggle_submission_file(test_predictions, 'cifar-'+dataset+'-example-network-submission.csv', True)          
       
-    elif (e - lowest_epoch >=20):
-        stopping = 1
-        break
+    #elif (e - lowest_epoch >=20):
+        #stopping = 1
+        #break
     # write stats summary to stdout
     print('Epoch {0:02d}: err(train)={1:.2f} acc(train)={2:.2f} step={3:.2f} time={4:.2f}s'
           .format(e + 1, train_error[e], train_accuracy[e], step, epoch_time))
