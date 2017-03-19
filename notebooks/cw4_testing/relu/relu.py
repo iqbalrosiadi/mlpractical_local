@@ -143,18 +143,19 @@ with tf.name_scope('conv-stack-1'):
     print "conv1.shape:", conv1.get_shape()
     conv1 = conv2d(conv1, weights['wc1a'], biases['bc1'])
     print "conv1.shape:", conv1.get_shape()
-    h_pool_conv1 = maxpool2d(conv1, k=2)
+    norm1 = norm(conv1, 4)
+    print "norm1.shape:", norm1.get_shape()
+    h_pool_conv1 = maxpool2d(norm1, k=2)
     print "h_pool_conv1.shape:", h_pool_conv1.get_shape()
     do_fc1 = tf.nn.dropout(h_pool_conv1, dropout[0])
     print "do_fc1.shape:", do_fc1.get_shape()
-    norm1 = norm(do_fc1, 4)
-    print "norm1.shape:", norm1.get_shape()
+    
 
 ########################
 #Layer 2 CONV>POOL>NORM
 ########################
 with tf.name_scope('conv-stack-2'):
-    conv2 = conv2d(norm1, weights['wc2'], biases['bc2'])
+    conv2 = conv2d(do_fc1, weights['wc2'], biases['bc2'])
     print "conv2.shape:", conv2.get_shape()
     conv2a = conv2d(conv2, weights['wc2a'], biases['bc2'])
     print "conv2a.shape:", conv2a.get_shape()
@@ -285,7 +286,7 @@ for e in range(num_epoch):
         #test_predictions = sess.run(tf.nn.softmax(outputs), feed_dict={inputs: test_inputs})
         #create_kaggle_submission_file(test_predictions, 'cifar-10-example-network-submission.csv', True)          
       
-    elif (e - lowest_epoch >=20):
+    elif (e - lowest_epoch >=25):
         stopping = 1
         break
     # write stats summary to stdout

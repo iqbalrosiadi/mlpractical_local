@@ -286,7 +286,7 @@ for e in range(num_epoch):
         #test_predictions = sess.run(tf.nn.softmax(outputs), feed_dict={inputs: test_inputs})
         #create_kaggle_submission_file(test_predictions, 'cifar-10-example-network-submission.csv', True)          
       
-    elif (e - lowest_epoch >=20):
+    elif (e - lowest_epoch >=25):
         stopping = 1
         break
     # write stats summary to stdout
