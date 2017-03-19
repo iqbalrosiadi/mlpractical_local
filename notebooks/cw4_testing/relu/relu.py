@@ -174,7 +174,7 @@ with tf.name_scope('conv-stack-3'):
     print "conv2.shape:", conv2.get_shape()
     conv3a = conv2d(conv3, weights['wc3a'], biases['bc3'])
     print "conv3.shape:", conv2.get_shape()
-    norm2 = norm(conv3a, 4)
+    norm3 = norm(conv3a, 4)
     print "norm1.shape:", norm2.get_shape()
     h_pool_conv2 = maxpool2d(norm2, k=2)
     print "h_pool_conv2.shape:", h_pool_conv2.get_shape()
@@ -238,6 +238,7 @@ valid_writer = tf.summary.FileWriter(os.path.join(exp_dir, 'valid-summaries'))
 saver = tf.train.Saver()
 
 min_val_error = 1e6
+mve_acc = 0
 lowest_epoch = 0
 stopping = 0
 train_accuracy = np.zeros(num_epoch)
@@ -280,6 +281,7 @@ for e in range(num_epoch):
     if (valid_error[e] <= min_val_error):
         lowest_epoch = e
         min_val_error = valid_error[e]
+        mve_acc = valid_accuracy[e]
         #test_predictions = sess.run(tf.nn.softmax(outputs), feed_dict={inputs: test_inputs})
         #create_kaggle_submission_file(test_predictions, 'cifar-10-example-network-submission.csv', True)          
       
@@ -294,8 +296,8 @@ for e in range(num_epoch):
 
 total_run_time = time.time() - start_run_time
 print('Total time ={0:.2f}s'.format(total_run_time))
-#print('End of epoch {0:02d}: err(test)={1:.4f} acc(test)={2:.4f}'
-#                          .format(lowest_epoch + 1, test_error, test_accuracy))
+print('End of epoch {0:02d}: err(test)={1:.4f} acc(test)={2:.4f}'
+                          .format(lowest_epoch + 1, min_val_error, mve_acc))
 
 # close writer and session objects
 train_writer.close()
