@@ -280,8 +280,8 @@ for e in range(num_epoch):
     if (valid_error[e] <= min_val_error):
         lowest_epoch = e
         min_val_error = valid_error[e]
-        test_predictions = sess.run(tf.nn.softmax(outputs), feed_dict={inputs: test_inputs})
-        create_kaggle_submission_file(test_predictions, 'cifar-10-example-network-submission.csv', True)          
+        #test_predictions = sess.run(tf.nn.softmax(outputs), feed_dict={inputs: test_inputs})
+        #create_kaggle_submission_file(test_predictions, 'cifar-10-example-network-submission.csv', True)          
       
     elif (e - lowest_epoch >=20):
         stopping = 1
