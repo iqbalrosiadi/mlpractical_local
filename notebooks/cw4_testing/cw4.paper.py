@@ -75,13 +75,13 @@ weights = {
     # 5x5 conv, 1 input, 32 outputs
     'wc0': tf.Variable(tf.truncated_normal([3, 3, 3, 32], stddev=.1)),
     # 5x5 conv, 1 input, 32 outputs
-    'wc1': tf.Variable(tf.truncated_normal([1, 1, 32, 192], stddev=.1)),
-    'wc1b': tf.Variable(tf.truncated_normal([3, 3, 192, 240], stddev=.1)),
+    'wc1': tf.Variable(tf.truncated_normal([1, 1, 32, 64], stddev=.1)),
+    'wc1b': tf.Variable(tf.truncated_normal([3, 3, 64, 128], stddev=.1)),
     # 5x5 conv, 1 input, 32 outputs
-    'wc2': tf.Variable(tf.truncated_normal([1, 1, 240, 240], stddev=.1)),
-    'wc2b': tf.Variable(tf.truncated_normal([2, 2, 240, 260], stddev=.1)),
+    'wc2': tf.Variable(tf.truncated_normal([1, 1, 128, 192], stddev=.1)),
+    'wc2b': tf.Variable(tf.truncated_normal([2, 2, 192, 240], stddev=.1)),
     # 5x5 conv, 1 input, 32 outputs
-    'wc3': tf.Variable(tf.truncated_normal([1, 1, 260, 260], stddev=.1)),
+    'wc3': tf.Variable(tf.truncated_normal([1, 1, 240, 260], stddev=.1)),
     'wc3b': tf.Variable(tf.truncated_normal([2, 2, 260, 280], stddev=.1)),
     # 5x5 conv, 1 input, 32 outputs
     'wc4': tf.Variable(tf.truncated_normal([1, 1, 280, 280], stddev=.1)),
@@ -101,12 +101,13 @@ weights = {
 
 biases = {
     'bc0': tf.Variable(tf.random_normal([32])),
-    'bc1': tf.Variable(tf.random_normal([192])),
-    'bc2': tf.Variable(tf.random_normal([240])),
-    'bc3': tf.Variable(tf.random_normal([260])),
-    'bc4': tf.Variable(tf.random_normal([280])),
-    'bd1': tf.Variable(tf.random_normal([300])),
-    'bd2': tf.Variable(tf.random_normal([100])),
+    'bc1': tf.Variable(tf.random_normal([64])),
+    'bc2': tf.Variable(tf.random_normal([128])),
+    'bc3': tf.Variable(tf.random_normal([192])),
+    'bc4': tf.Variable(tf.random_normal([240])),
+    'bd1': tf.Variable(tf.random_normal([260])),
+    'bd2': tf.Variable(tf.random_normal([280])),
+    'bd3': tf.Variable(tf.random_normal([300])),
     'out': tf.Variable(tf.random_normal([train_data.num_classes]))
 }
 
@@ -155,16 +156,16 @@ with tf.name_scope('conv-stack-2'):
     h_pool_conv2 = maxpool2d(norm2, k=2)
     print "h_pool_conv2.shape:", h_pool_conv2.get_shape()
     do_fc2 = tf.nn.dropout(h_pool_conv2, .2)
-    print "do_fc1.shape:", do_fc1.get_shape()
+    print "do_fc1.shape:", do_fc2.get_shape()
     
 
 ########################
 #Layer 3 CONV>POOL>NORM
 ########################
 with tf.name_scope('conv-stack-3'):
-    conv3 = conv2d(do_fc2, weights['wc2'], biases['bc2'])
+    conv3 = conv2d(do_fc2, weights['wc2'], biases['bc3'])
     print "conv2.shape:", conv2.get_shape()
-    conv3a = conv2d(conv3, weights['wc2b'], biases['bc3'])
+    conv3a = conv2d(conv3, weights['wc2b'], biases['bc4'])
     print "conv3.shape:", conv2.get_shape()
     norm3 = norm(conv3a, 4)
     print "norm3.shape:", norm3.get_shape()
@@ -178,9 +179,9 @@ with tf.name_scope('conv-stack-3'):
 #Layer 4 CONV>POOL>NORM
 ########################
 with tf.name_scope('conv-stack-4'):
-    conv4 = conv2d(do_fc3, weights['wc3'], biases['bc3'])
+    conv4 = conv2d(do_fc3, weights['wc3'], biases['bd1'])
     print "conv4.shape:", conv4.get_shape()
-    conv4a = conv2d(conv4, weights['wc3b'], biases['bc4'])
+    conv4a = conv2d(conv4, weights['wc3b'], biases['bd2'])
     print "conv4a.shape:", conv4a.get_shape()
     norm4 = norm(conv4a, 4)
     print "norm4.shape:", norm4.get_shape()
@@ -193,9 +194,9 @@ with tf.name_scope('conv-stack-4'):
 #Layer 5 CONV>POOL>NORM
 ########################
 with tf.name_scope('conv-stack-5'):
-    conv5 = conv2d(do_fc4, weights['wc4'], biases['bc4'])
+    conv5 = conv2d(do_fc4, weights['wc4'], biases['bd2'])
     print "conv5.shape:", conv5.get_shape()
-    conv5a = conv2d(conv5, weights['wc4b'], biases['bd1'])
+    conv5a = conv2d(conv5, weights['wc4b'], biases['bd3'])
     print "conv5a.shape:", conv5a.get_shape()
     norm5 = norm(conv5a, 4)
     print "norm5.shape:", norm5.get_shape()
@@ -211,7 +212,7 @@ with tf.name_scope('conv-stack-5'):
 with tf.name_scope('fc-layer-1'):
     flat_fc1 = tf.reshape(do_fc5, [-1, pool5Shape[1]*pool5Shape[2]*pool5Shape[3] ])#weights['wd1'].get_shape().as_list()[0]]) #3136
     print "flat_fc1.shape:", flat_fc1.get_shape()
-    fc1 = tf.add(tf.matmul(flat_fc1, weights['wd2']), biases['bd2'])
+    fc1 = tf.add(tf.matmul(flat_fc1, weights['wd2']), biases['bd3x'])
     print "fc1.shape:", fc1.get_shape()
     relu_fc1 = tf.nn.relu(fc1)
     print "relu_fc1.shape:", relu_fc1.get_shape()
