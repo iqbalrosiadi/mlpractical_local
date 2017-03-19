@@ -75,17 +75,17 @@ weights = {
     # 5x5 conv, 1 input, 32 outputs
     'wc0': tf.Variable(tf.truncated_normal([3, 3, 3, 32], stddev=.1)),
     # 5x5 conv, 1 input, 32 outputs
-    'wc1': tf.Variable(tf.truncated_normal([1, 1, 32, 64], stddev=.1)),
+    'wc1': tf.Variable(tf.truncated_normal([3, 3, 32, 64], stddev=.1)),
     'wc1b': tf.Variable(tf.truncated_normal([3, 3, 64, 128], stddev=.1)),
     # 5x5 conv, 1 input, 32 outputs
-    'wc2': tf.Variable(tf.truncated_normal([1, 1, 128, 192], stddev=.1)),
-    'wc2b': tf.Variable(tf.truncated_normal([2, 2, 192, 240], stddev=.1)),
+    'wc2': tf.Variable(tf.truncated_normal([3, 3, 128, 192], stddev=.1)),
+    'wc2b': tf.Variable(tf.truncated_normal([3, 3, 192, 240], stddev=.1)),
     # 5x5 conv, 1 input, 32 outputs
-    'wc3': tf.Variable(tf.truncated_normal([1, 1, 240, 260], stddev=.1)),
-    'wc3b': tf.Variable(tf.truncated_normal([2, 2, 260, 280], stddev=.1)),
+    'wc3': tf.Variable(tf.truncated_normal([3, 3, 240, 260], stddev=.1)),
+    'wc3b': tf.Variable(tf.truncated_normal([3, 3, 260, 280], stddev=.1)),
     # 5x5 conv, 1 input, 32 outputs
-    'wc4': tf.Variable(tf.truncated_normal([1, 1, 280, 280], stddev=.1)),
-    'wc4b': tf.Variable(tf.truncated_normal([2, 2, 280, 300], stddev=.1)),
+    'wc4': tf.Variable(tf.truncated_normal([3, 3, 280, 280], stddev=.1)),
+    'wc4b': tf.Variable(tf.truncated_normal([3, 3, 280, 300], stddev=.1)),
     # 5x5 conv, 32 inputs, 64 outputs
     #'wc5': tf.Variable(tf.truncated_normal([3, 3, 64, 128], stddev=.1)),
     #'wc5a': tf.Variable(tf.truncated_normal([3, 3, 128, 128], stddev=.1)),
