@@ -108,7 +108,7 @@ biases = {
     'bd1': tf.Variable(tf.random_normal([260])),
     'bd2': tf.Variable(tf.random_normal([280])),
     'bd3': tf.Variable(tf.random_normal([300])),
-    'bd4': tf.Variable(tf.random_normal([300])),
+    'bd4': tf.Variable(tf.random_normal([100])),
     'out': tf.Variable(tf.random_normal([train_data.num_classes]))
 }
 
