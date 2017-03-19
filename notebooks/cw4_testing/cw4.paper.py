@@ -73,9 +73,9 @@ def norm(layer, lsize) :
 # Store layers weight & bias
 weights = {
     # 5x5 conv, 1 input, 32 outputs
-    'wc0': tf.Variable(tf.truncated_normal([5, 5, 3, 192], stddev=.1)),
+    'wc0': tf.Variable(tf.truncated_normal([5, 5, 3, 32], stddev=.1)),
     # 5x5 conv, 1 input, 32 outputs
-    'wc1': tf.Variable(tf.truncated_normal([1, 1, 192, 192], stddev=.1)),
+    'wc1': tf.Variable(tf.truncated_normal([1, 1, 32, 192], stddev=.1)),
     'wc1b': tf.Variable(tf.truncated_normal([3, 3, 192, 240], stddev=.1)),
     # 5x5 conv, 1 input, 32 outputs
     'wc2': tf.Variable(tf.truncated_normal([1, 1, 240, 240], stddev=.1)),
@@ -100,6 +100,7 @@ weights = {
 }
 
 biases = {
+    'bc0': tf.Variable(tf.random_normal([32])),
     'bc1': tf.Variable(tf.random_normal([192])),
     'bc2': tf.Variable(tf.random_normal([240])),
     'bc3': tf.Variable(tf.random_normal([260])),
@@ -132,7 +133,7 @@ with tf.name_scope('data'):
 #Layer 1 CONV>POOL>NORM
 ########################
 with tf.name_scope('conv-stack-1'):
-    conv1 = conv2d(inputs, weights['wc0'], biases['bc1'])
+    conv1 = conv2d(inputs, weights['wc0'], biases['bc0'])
     print "conv1.shape:", conv1.get_shape()
     h_pool_conv1 = maxpool2d(conv1, k=2)
     print "h_pool_conv1.shape:", h_pool_conv1.get_shape()
