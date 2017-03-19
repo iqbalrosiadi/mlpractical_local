@@ -20,7 +20,7 @@ assert 'OUTPUT_DIR' in os.environ, (
 nonlinear_arr = 'tf.nn.relu'
 learning_rate = 0.001
 num_epoch = 100
-dropout =  [ .75, .75, .75, .75]# Dropout, probability to keep units
+dropout = 0.75 # Dropout, probability to keep units
 keep_prob = tf.placeholder(tf.float32) #dropout (keep probability)
 commands = {
     'tf.nn.relu' : tf.nn.relu,
@@ -128,7 +128,7 @@ with tf.name_scope('conv-stack-1'):
     print "conv1.shape:", conv1.get_shape()
     h_pool_conv1 = maxpool2d(conv1, k=2)
     print "h_pool_conv1.shape:", h_pool_conv1.get_shape()
-    do_fc1 = tf.nn.dropout(h_pool_conv1, dropout[0])
+    do_fc1 = tf.nn.dropout(h_pool_conv1, dropout)
     print "do_fc1.shape:", do_fc1.get_shape()
     norm1 = norm(do_fc1, 4)
     print "norm1.shape:", norm1.get_shape()
@@ -145,7 +145,7 @@ with tf.name_scope('conv-stack-2'):
     print "norm1.shape:", norm2.get_shape()
     h_pool_conv2 = maxpool2d(norm2, k=2)
     print "h_pool_conv2.shape:", h_pool_conv2.get_shape()
-    do_fc2 = tf.nn.dropout(h_pool_conv2, dropout[1])
+    do_fc2 = tf.nn.dropout(h_pool_conv2, dropout)
     print "do_fc1.shape:", do_fc1.get_shape()
     
 
@@ -161,7 +161,7 @@ with tf.name_scope('conv-stack-3'):
     print "norm1.shape:", norm2.get_shape()
     h_pool_conv2 = maxpool2d(norm2, k=2)
     print "h_pool_conv2.shape:", h_pool_conv2.get_shape()
-    do_fc3 = tf.nn.dropout(h_pool_conv2, dropout[2])
+    do_fc3 = tf.nn.dropout(h_pool_conv2, dropout)
     print "do_fc1.shape:", do_fc3.get_shape()
     pool5Shape = do_fc3.get_shape().as_list()
     
@@ -220,9 +220,7 @@ train_writer = tf.summary.FileWriter(os.path.join(exp_dir, 'train-summaries'))
 valid_writer = tf.summary.FileWriter(os.path.join(exp_dir, 'valid-summaries'))
 saver = tf.train.Saver()
 
-min_val_error = 1e6
-lowest_epoch = 0
-stopping = 0
+
 train_accuracy = np.zeros(num_epoch)
 train_error = np.zeros(num_epoch)
 valid_accuracy = np.zeros(num_epoch)
@@ -259,16 +257,6 @@ for e in range(num_epoch):
     valid_writer.add_summary(valid_summary, step)
     # checkpoint model variables
     saver.save(sess, os.path.join(checkpoint_dir, 'model.ckpt'), step)
-    #stopping
-    if (valid_error[e] <= min_val_error):
-        lowest_epoch = e
-        min_val_error = valid_error[e]
-        #test_predictions = sess.run(tf.nn.softmax(outputs), feed_dict={inputs: test_inputs})
-        #create_kaggle_submission_file(test_predictions, 'cifar-'+dataset+'-example-network-submission.csv', True)          
-      
-    elif (e - lowest_epoch >=20):
-        stopping = 1
-        break
     # write stats summary to stdout
     print('Epoch {0:02d}: err(train)={1:.2f} acc(train)={2:.2f} step={3:.2f} time={4:.2f}s'
           .format(e + 1, train_error[e], train_accuracy[e], step, epoch_time))
