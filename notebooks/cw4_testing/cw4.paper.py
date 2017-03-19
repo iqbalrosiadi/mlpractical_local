@@ -136,7 +136,7 @@ with tf.name_scope('conv-stack-1'):
     print "conv1.shape:", conv1.get_shape()
     h_pool_conv1 = maxpool2d(conv1, k=2)
     print "h_pool_conv1.shape:", h_pool_conv1.get_shape()
-    do_fc1 = tf.nn.dropout(h_pool_conv1, 0.0)
+    do_fc1 = tf.nn.dropout(h_pool_conv1, .0)
     print "do_fc1.shape:", do_fc1.get_shape()
     norm1 = norm(do_fc1, 4)
     print "norm1.shape:", norm1.get_shape()
@@ -153,7 +153,7 @@ with tf.name_scope('conv-stack-2'):
     print "norm1.shape:", norm2.get_shape()
     h_pool_conv2 = maxpool2d(norm2, k=2)
     print "h_pool_conv2.shape:", h_pool_conv2.get_shape()
-    do_fc2 = tf.nn.dropout(h_pool_conv2, 0.1)
+    do_fc2 = tf.nn.dropout(h_pool_conv2, .1)
     print "do_fc1.shape:", do_fc1.get_shape()
     
 
@@ -169,7 +169,7 @@ with tf.name_scope('conv-stack-3'):
     print "norm3.shape:", norm3.get_shape()
     h_pool_conv3 = maxpool2d(norm3, k=2)
     print "h_pool_conv3.shape:", h_pool_conv3.get_shape()
-    do_fc3 = tf.nn.dropout(h_pool_conv3, 0.2)
+    do_fc3 = tf.nn.dropout(h_pool_conv3, .2)
     print "do_fc3.shape:", do_fc3.get_shape()
     
 
@@ -185,7 +185,7 @@ with tf.name_scope('conv-stack-3'):
     print "norm4.shape:", norm4.get_shape()
     h_pool_conv4 = maxpool2d(norm4, k=2)
     print "h_pool_conv2.shape:", h_pool_conv4.get_shape()
-    do_fc4 = tf.nn.dropout(h_pool_conv4, 0.3)
+    do_fc4 = tf.nn.dropout(h_pool_conv4, .3)
     print "do_fc4.shape:", do_fc4.get_shape()
    
 ########################
@@ -200,7 +200,7 @@ with tf.name_scope('conv-stack-3'):
     print "norm5.shape:", norm5.get_shape()
     h_pool_conv5= maxpool2d(norm5, k=2)
     print "h_pool_conv5.shape:", h_pool_conv5.get_shape()
-    do_fc5 = tf.nn.dropout(h_pool_conv5, 0.4)
+    do_fc5 = tf.nn.dropout(h_pool_conv5, .4)
     print "do_fc5.shape:", do_fc5.get_shape()
     pool5Shape = do_fc5.get_shape().as_list()
 
