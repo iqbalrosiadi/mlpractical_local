@@ -163,7 +163,7 @@ with tf.name_scope('conv-stack-2'):
     h_pool_conv2 = maxpool2d(norm2, k=2)
     print "h_pool_conv2.shape:", h_pool_conv2.get_shape()
     do_fc2 = tf.nn.dropout(h_pool_conv2, dropout[1])
-    print "do_fc1.shape:", do_fc1.get_shape()
+    print "do_fc2.shape:", do_fc2.get_shape()
     
 
 ########################
@@ -175,10 +175,10 @@ with tf.name_scope('conv-stack-3'):
     conv3a = conv2d(conv3, weights['wc3a'], biases['bc3'])
     print "conv3.shape:", conv2.get_shape()
     norm3 = norm(conv3a, 4)
-    print "norm1.shape:", norm2.get_shape()
-    h_pool_conv2 = maxpool2d(norm2, k=2)
-    print "h_pool_conv2.shape:", h_pool_conv2.get_shape()
-    do_fc3 = tf.nn.dropout(h_pool_conv2, dropout[2])
+    print "norm1.shape:", norm3.get_shape()
+    h_pool_conv3 = maxpool2d(norm3, k=2)
+    print "h_pool_conv3.shape:", h_pool_conv3.get_shape()
+    do_fc3 = tf.nn.dropout(h_pool_conv3, dropout[2])
     print "do_fc1.shape:", do_fc3.get_shape()
     pool5Shape = do_fc3.get_shape().as_list()
     
