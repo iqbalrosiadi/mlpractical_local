@@ -1,0 +1,6 @@
+model_checkpoint_path: "/home/ubuntu/mlpractical/notebooks/result/C10_150_tf.nn.relu_2017-03-20_12-19-46/checkpoints/model.ckpt-120000"
+all_model_checkpoint_paths: "/home/ubuntu/mlpractical/notebooks/result/C10_150_tf.nn.relu_2017-03-20_12-19-46/checkpoints/model.ckpt-116800"
+all_model_checkpoint_paths: "/home/ubuntu/mlpractical/notebooks/result/C10_150_tf.nn.relu_2017-03-20_12-19-46/checkpoints/model.ckpt-117600"
+all_model_checkpoint_paths: "/home/ubuntu/mlpractical/notebooks/result/C10_150_tf.nn.relu_2017-03-20_12-19-46/checkpoints/model.ckpt-118400"
+all_model_checkpoint_paths: "/home/ubuntu/mlpractical/notebooks/result/C10_150_tf.nn.relu_2017-03-20_12-19-46/checkpoints/model.ckpt-119200"
+all_model_checkpoint_paths: "/home/ubuntu/mlpractical/notebooks/result/C10_150_tf.nn.relu_2017-03-20_12-19-46/checkpoints/model.ckpt-120000"
