@@ -92,7 +92,6 @@ def create_kaggle_submission_file(predictions, output_file, overwrite=False):
 weights = {
     # 5x5 conv, 1 input, 32 outputs
     'wc1': tf.Variable(tf.truncated_normal([3, 3, 3, 32], stddev=.1)), #1
-    'wc1a': tf.Variable(tf.truncated_normal([3, 3, 32, 32], stddev=.1)), #2
     # 5x5 conv, 32 inputs, 64 outputs
     'wc2': tf.Variable(tf.truncated_normal([3, 3, 32, 64], stddev=.1)), #3
     'wc2a': tf.Variable(tf.truncated_normal([3, 3, 64, 64], stddev=.1)), #4
@@ -139,10 +138,6 @@ with tf.name_scope('conv-stack-1'):
     print "#### STACK 1 ##########"
     conv1 = conv2d(inputs, weights['wc1'], biases['bc1'])
     print "conv1.shape:", conv1.get_shape()
-    conv1 = conv2d(conv1, weights['wc1a'], biases['bc1'])
-    print "conv1.shape:", conv1.get_shape()
-    #norm1 = norm(conv1, 4)
-    #print "norm1.shape:", norm1.get_shape()
     h_pool_conv1 = maxpool2d(conv1, k=2)
     print "h_pool_conv1.shape:", h_pool_conv1.get_shape()
     #do_fc1 = tf.nn.dropout(h_pool_conv1, dropout[0])
@@ -252,7 +247,7 @@ with tf.name_scope('output'):
 with tf.name_scope('error'):
     error = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=outputs, labels=targets))
     #loss regulizer
-    regularizers = tf.nn.l2_loss(weights['wc1']) + tf.nn.l2_loss(weights['wc1a'])\
+    regularizers = tf.nn.l2_loss(weights['wc1']) + \
     tf.nn.l2_loss(weights['wc2']) + tf.nn.l2_loss(weights['wc2a']) + \
     tf.nn.l2_loss(weights['wc3']) + tf.nn.l2_loss(weights['wc3a']) + \
     tf.nn.l2_loss(weights['wc4']) + tf.nn.l2_loss(weights['wc4a']) + \

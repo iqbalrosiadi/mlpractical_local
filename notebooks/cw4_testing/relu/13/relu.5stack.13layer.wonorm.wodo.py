@@ -102,6 +102,7 @@ weights = {
     # 5x5 conv, 32 inputs, 64 outputs
     'wc4': tf.Variable(tf.truncated_normal([3, 3, 128, 256], stddev=.1)), #7
     'wc4a': tf.Variable(tf.truncated_normal([3, 3, 256, 256], stddev=.1)), #8
+    'wc4b': tf.Variable(tf.truncated_normal([3, 3, 256, 256], stddev=.1)), #8
     # 5x5 conv, 32 inputs, 64 outputs
     'wc5': tf.Variable(tf.truncated_normal([3, 3, 256, 256], stddev=.1)), #9
     'wc5a': tf.Variable(tf.truncated_normal([3, 3, 256, 256], stddev=.1)), #10
@@ -192,9 +193,11 @@ with tf.name_scope('conv-stack-4'):
     print "conv4.shape:", conv4.get_shape()
     conv4a = conv2d(conv4, weights['wc4a'], biases['bc4'])
     print "conv4a.shape:", conv4a.get_shape()
+    conv4b = conv2d(conv4a, weights['wc4b'], biases['bc4'])
+    print "conv4b.shape:", conv4b.get_shape()
     #norm4 = norm(conv4a, 4)
     #print "norm4.shape:", norm4.get_shape()
-    h_pool_conv4 = maxpool2d(conv4a, k=2)
+    h_pool_conv4 = maxpool2d(conv4b, k=2)
     print "h_pool_conv4.shape:", h_pool_conv4.get_shape()
     #do_fc4 = tf.nn.dropout(h_pool_conv4, dropout[3])
     #print "do_fc4.shape:", do_fc4.get_shape()
@@ -255,7 +258,7 @@ with tf.name_scope('error'):
     regularizers = tf.nn.l2_loss(weights['wc1']) + tf.nn.l2_loss(weights['wc1a'])\
     tf.nn.l2_loss(weights['wc2']) + tf.nn.l2_loss(weights['wc2a']) + \
     tf.nn.l2_loss(weights['wc3']) + tf.nn.l2_loss(weights['wc3a']) + \
-    tf.nn.l2_loss(weights['wc4']) + tf.nn.l2_loss(weights['wc4a']) + \
+    tf.nn.l2_loss(weights['wc4']) + tf.nn.l2_loss(weights['wc4a']) + tf.nn.l2_loss(weights['wc4b']) + \
     tf.nn.l2_loss(weights['wc5']) + tf.nn.l2_loss(weights['wc5a']) + \
     tf.nn.l2_loss(weights['wd1']) + tf.nn.l2_loss(weights['wd2']) 
     loss = tf.reduce_mean(error + beta * regularizers)
