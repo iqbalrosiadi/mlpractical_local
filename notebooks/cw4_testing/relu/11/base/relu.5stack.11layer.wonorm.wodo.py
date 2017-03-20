@@ -20,7 +20,7 @@ assert 'OUTPUT_DIR' in os.environ, (
 nonlinear_arr = 'tf.nn.relu'
 learning_rate = 0.001
 beta = 0.01
-num_epoch = 100
+num_epoch = 150
 dropout =  .5 #[ .75, .75, .75, .75, .75, .5, .5, .5]# Dropout, probability to keep units
 keep_prob = tf.placeholder(tf.float32) #dropout (keep probability)
 commands = {
@@ -92,7 +92,6 @@ def create_kaggle_submission_file(predictions, output_file, overwrite=False):
 weights = {
     # 5x5 conv, 1 input, 32 outputs
     'wc1': tf.Variable(tf.truncated_normal([3, 3, 3, 32], stddev=.1)), #1
-    'wc1a': tf.Variable(tf.truncated_normal([3, 3, 32, 32], stddev=.1)), #2
     # 5x5 conv, 32 inputs, 64 outputs
     'wc2': tf.Variable(tf.truncated_normal([3, 3, 32, 64], stddev=.1)), #3
     'wc2a': tf.Variable(tf.truncated_normal([3, 3, 64, 64], stddev=.1)), #4
@@ -102,7 +101,6 @@ weights = {
     # 5x5 conv, 32 inputs, 64 outputs
     'wc4': tf.Variable(tf.truncated_normal([3, 3, 128, 256], stddev=.1)), #7
     'wc4a': tf.Variable(tf.truncated_normal([3, 3, 256, 256], stddev=.1)), #8
-    'wc4b': tf.Variable(tf.truncated_normal([3, 3, 256, 256], stddev=.1)), #8
     # 5x5 conv, 32 inputs, 64 outputs
     'wc5': tf.Variable(tf.truncated_normal([3, 3, 256, 256], stddev=.1)), #9
     'wc5a': tf.Variable(tf.truncated_normal([3, 3, 256, 256], stddev=.1)), #10
@@ -140,10 +138,6 @@ with tf.name_scope('conv-stack-1'):
     print "#### STACK 1 ##########"
     conv1 = conv2d(inputs, weights['wc1'], biases['bc1'])
     print "conv1.shape:", conv1.get_shape()
-    conv1 = conv2d(conv1, weights['wc1a'], biases['bc1'])
-    print "conv1.shape:", conv1.get_shape()
-    #norm1 = norm(conv1, 4)
-    #print "norm1.shape:", norm1.get_shape()
     h_pool_conv1 = maxpool2d(conv1, k=2)
     print "h_pool_conv1.shape:", h_pool_conv1.get_shape()
     #do_fc1 = tf.nn.dropout(h_pool_conv1, dropout[0])
@@ -193,11 +187,9 @@ with tf.name_scope('conv-stack-4'):
     print "conv4.shape:", conv4.get_shape()
     conv4a = conv2d(conv4, weights['wc4a'], biases['bc4'])
     print "conv4a.shape:", conv4a.get_shape()
-    conv4b = conv2d(conv4a, weights['wc4b'], biases['bc4'])
-    print "conv4b.shape:", conv4b.get_shape()
     #norm4 = norm(conv4a, 4)
     #print "norm4.shape:", norm4.get_shape()
-    h_pool_conv4 = maxpool2d(conv4b, k=2)
+    h_pool_conv4 = maxpool2d(conv4a, k=2)
     print "h_pool_conv4.shape:", h_pool_conv4.get_shape()
     #do_fc4 = tf.nn.dropout(h_pool_conv4, dropout[3])
     #print "do_fc4.shape:", do_fc4.get_shape()
@@ -255,10 +247,10 @@ with tf.name_scope('output'):
 with tf.name_scope('error'):
     error = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=outputs, labels=targets))
     #loss regulizer
-    regularizers = tf.nn.l2_loss(weights['wc1']) + tf.nn.l2_loss(weights['wc1a']) + \
+    regularizers = tf.nn.l2_loss(weights['wc1']) + \
     tf.nn.l2_loss(weights['wc2']) + tf.nn.l2_loss(weights['wc2a']) + \
     tf.nn.l2_loss(weights['wc3']) + tf.nn.l2_loss(weights['wc3a']) + \
-    tf.nn.l2_loss(weights['wc4']) + tf.nn.l2_loss(weights['wc4a']) + tf.nn.l2_loss(weights['wc4b']) + \
+    tf.nn.l2_loss(weights['wc4']) + tf.nn.l2_loss(weights['wc4a']) + \
     tf.nn.l2_loss(weights['wc5']) + tf.nn.l2_loss(weights['wc5a']) + \
     tf.nn.l2_loss(weights['wd1']) + tf.nn.l2_loss(weights['wd2']) 
     loss = tf.reduce_mean(error + beta * regularizers)

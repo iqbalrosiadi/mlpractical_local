@@ -20,7 +20,7 @@ assert 'OUTPUT_DIR' in os.environ, (
 nonlinear_arr = 'tf.nn.relu'
 learning_rate = 0.001
 beta = 0.01
-num_epoch = 100
+num_epoch = 150
 dropout =  .5 #[ .75, .75, .75, .75, .75, .5, .5, .5]# Dropout, probability to keep units
 keep_prob = tf.placeholder(tf.float32) #dropout (keep probability)
 commands = {
