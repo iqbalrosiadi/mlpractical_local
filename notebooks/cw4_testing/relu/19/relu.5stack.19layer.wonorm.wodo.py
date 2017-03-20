@@ -269,7 +269,7 @@ with tf.name_scope('output'):
 with tf.name_scope('error'):
     error = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=outputs, labels=targets))
     #loss regulizer
-    regularizers = tf.nn.l2_loss(weights['wc1']) + tf.nn.l2_loss(weights['wc1a'])\
+    regularizers = tf.nn.l2_loss(weights['wc1']) + tf.nn.l2_loss(weights['wc1a']) + \
     tf.nn.l2_loss(weights['wc2']) + tf.nn.l2_loss(weights['wc2a']) + \
     tf.nn.l2_loss(weights['wc3']) + tf.nn.l2_loss(weights['wc3a']) + tf.nn.l2_loss(weights['wc3b']) +\
     tf.nn.l2_loss(weights['wc4']) + tf.nn.l2_loss(weights['wc4a']) + tf.nn.l2_loss(weights['wc4b']) + tf.nn.l2_loss(weights['wc4c']) + tf.nn.l2_loss(weights['wc5d']) +\
