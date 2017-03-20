@@ -254,17 +254,9 @@ with tf.name_scope('output'):
     
 with tf.name_scope('error'):
     error = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=outputs, labels=targets))
-    #loss regulizer
-    regularizers = tf.nn.l2_loss(weights['wc1']) + tf.nn.l2_loss(weights['wc1a']) + \
-    tf.nn.l2_loss(weights['wc2']) + tf.nn.l2_loss(weights['wc2a']) + \
-    tf.nn.l2_loss(weights['wc3']) + tf.nn.l2_loss(weights['wc3a']) + \
-    tf.nn.l2_loss(weights['wc4']) + tf.nn.l2_loss(weights['wc4a']) + tf.nn.l2_loss(weights['wc4b']) + \
-    tf.nn.l2_loss(weights['wc5']) + tf.nn.l2_loss(weights['wc5a']) + \
-    tf.nn.l2_loss(weights['wd1']) + tf.nn.l2_loss(weights['wd2']) +  tf.nn.l2_loss(weights['out'])
-    loss = tf.reduce_mean(error + beta * regularizers)
-
+ 
 with tf.name_scope('train'):
-    train_step = tf.train.GradientDescentOptimizer(learning_rate=learning_rate).minimize(loss)
+    train_step = tf.train.AdamOptimizer(learning_rate=learning_rate).minimize(error)
 
 with tf.name_scope('accuracy'):
     accuracy = tf.reduce_mean(tf.cast(tf.equal(tf.argmax(outputs, 1), tf.argmax(targets, 1)), tf.float32))
