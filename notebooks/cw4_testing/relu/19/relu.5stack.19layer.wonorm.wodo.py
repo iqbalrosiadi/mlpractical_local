@@ -222,7 +222,7 @@ with tf.name_scope('conv-stack-5'):
     print "conv5.shape:", conv5.get_shape()
     conv5a = conv2d(conv5, weights['wc5a'], biases['bc4'])
     print "conv5a.shape:", conv5a.get_shape()
-    conv5b = conv2d(conv5b, weights['wc5b'], biases['bc4'])
+    conv5b = conv2d(conv5a, weights['wc5b'], biases['bc4'])
     print "conv5b.shape:", conv5b.get_shape()
     conv5c = conv2d(conv5b, weights['wc5c'], biases['bc4'])
     print "conv5c.shape:", conv5c.get_shape()
