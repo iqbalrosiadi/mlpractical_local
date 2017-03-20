@@ -19,7 +19,7 @@ assert 'OUTPUT_DIR' in os.environ, (
 
 nonlinear_arr = 'tf.nn.relu'
 learning_rate = 0.001
-beta = 0.01
+beta = 0.0005
 num_epoch = 150
 dropout =  .5 #[ .75, .75, .75, .75, .75, .5, .5, .5]# Dropout, probability to keep units
 keep_prob = tf.placeholder(tf.float32) #dropout (keep probability)
@@ -252,7 +252,7 @@ with tf.name_scope('error'):
     tf.nn.l2_loss(weights['wc3']) + tf.nn.l2_loss(weights['wc3a']) + \
     tf.nn.l2_loss(weights['wc4']) + tf.nn.l2_loss(weights['wc4a']) + \
     tf.nn.l2_loss(weights['wc5']) + tf.nn.l2_loss(weights['wc5a']) + \
-    tf.nn.l2_loss(weights['wd1']) + tf.nn.l2_loss(weights['wd2']) 
+    tf.nn.l2_loss(weights['wd1']) + tf.nn.l2_loss(weights['wd2']) +  tf.nn.l2_loss(weights['out'])
     loss = tf.reduce_mean(error + beta * regularizers)
 
 with tf.name_scope('train'):
